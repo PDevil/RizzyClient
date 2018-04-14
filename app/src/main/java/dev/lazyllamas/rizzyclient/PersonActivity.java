@@ -144,7 +144,7 @@ public class PersonActivity extends AppCompatActivity implements AbsListView.OnS
         float offset = 1 - Math.max((headerBarOffsetY - scrollY) / headerBarOffsetY, 0f);
 
 
-        toolbar.setBackgroundColor(Color.argb((int) (offset * 255), 0, 0, 0));
+        toolbar.setBackgroundColor(Color.argb((int) (offset * 255), 128, 226, 221)); //ColorAccent
 
         headerBg.setTranslationY(scrollY / 2);
 
