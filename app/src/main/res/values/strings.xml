@@ -7,4 +7,9 @@
     <string name="gpsNotEnabled">GPS is not enabled</string>
     <string name="openLocation">Open location settings</string>
     <string name="cancel">Cancel</string>
+    <string name="tab_text_1">Nearby</string>
+    <string name="tab_text_2">Matches</string>
+    <string name="tab_text_3">Settings</string>
+    <string name="gpsIntent">GPSMAIN</string>
+    <string name="gpsPosIntent">NOW</string>
 </resources>

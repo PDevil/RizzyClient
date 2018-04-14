@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -112,7 +112,6 @@ public class SplashScreen extends AppCompatActivity {
             dialog.setPositiveButton(R.string.openLocation, new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-                    // TODO Auto-generated method stub
                     Intent myIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
                     getBaseContext().startActivity(myIntent);
                     finish();
@@ -131,9 +130,11 @@ public class SplashScreen extends AppCompatActivity {
         }
 
 
-
-        if ((gps_enabled || network_enabled) && gpsGranted)
+        if ((gps_enabled || network_enabled) && gpsGranted) {
+            Intent intent = new Intent(SplashScreen.this, MainTabbedActivity.class);
+            startActivity(intent);
             finish();
+        }
     }
 
     @Override
@@ -141,7 +142,7 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView = findViewById(R.id.imageView);
 
         an = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);
         an2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.abc_fade_out);

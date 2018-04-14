@@ -6,7 +6,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,8 +13,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
@@ -72,7 +69,7 @@ public class GPSService extends Service implements LocationListener {
                                         PendingIntent.FLAG_UPDATE_CURRENT
                                         );
 
-      //TODO MainTabbedIntent
+        Intent intent = new Intent(getApplicationContext(), MainTabbedActivity.class);
         PendingIntent resultPendingIntentStartActivity =
                 PendingIntent.getActivity(
                         this.getApplicationContext(),
@@ -83,10 +80,6 @@ public class GPSService extends Service implements LocationListener {
 
 
 
-
-
-// build notification
-// the addAction re-use the same intent to keep the example short
         Notification.Builder n  = new Notification.Builder(getApplicationContext())
                 .setContentTitle("Looking for friends")
                 .setSmallIcon(R.drawable.ic_r)
@@ -211,12 +204,29 @@ public class GPSService extends Service implements LocationListener {
 
     private void returngpsWorking(boolean gpsWorking)
     {
-        //TODO
+        Intent gpsStatusIntent = new Intent();
+        gpsStatusIntent.putExtra(MapsActivity.mainIntentName, gpsWorking);
+        gpsStatusIntent.setAction(getString(R.string.gpsIntent));
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(gpsStatusIntent);
     }
 
     private void fn_update(Location location) {
 
-      //TODO
+
+        intent.putExtra("latutide", location.getLatitude() + "");
+        intent.putExtra("longitude", location.getLongitude() + "");
+        sendBroadcast(intent);
+
+        Intent in = new Intent();
+        in.putExtra("latutide", location.getLatitude() + "");
+        in.putExtra("longitude", location.getLongitude() + "");
+        in.setAction(getString(R.string.gpsPosIntent));
+
+
+        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(in);
+
+        MapsActivity.lat = location.getLatitude();
+        MapsActivity.lon = location.getLongitude();
 
 
 
