@@ -47,6 +47,8 @@ public class MainTabbedActivity extends AppCompatActivity {
         startService(new Intent(this, GPSService.class));
 
         mainContext = this;
+
+
     }
 
     @Override
