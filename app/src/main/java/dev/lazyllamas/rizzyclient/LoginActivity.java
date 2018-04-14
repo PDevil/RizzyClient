@@ -3,6 +3,10 @@ package dev.lazyllamas.rizzyclient;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.app.LoaderManager.LoaderCallbacks;
 
@@ -16,6 +20,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,13 +31,26 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import dev.lazyllamas.rizzyclient.Business.APIService;
+import dev.lazyllamas.rizzyclient.Business.APIUtils;
+import dev.lazyllamas.rizzyclient.Business.ErrorState;
+import dev.lazyllamas.rizzyclient.Business.NewUser;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<Cursor> {
+public class LoginActivity extends AppCompatActivity {
 
     /**
      * Id to identity READ_CONTACTS permission request.
@@ -63,7 +81,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         setContentView(R.layout.activity_login);
         // Set up the login form.
         mEmailView = findViewById(R.id.email);
-        populateAutoComplete();
 
         mPasswordView = findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -89,11 +106,6 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         mProgressView = findViewById(R.id.login_progress);
     }
 
-    private void populateAutoComplete() {
-
-
-        getLoaderManager().initLoader(0, null, this);
-    }
 
 
     /**
@@ -194,59 +206,7 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         }
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
-        return new CursorLoader(this,
-                // Retrieve data rows for the device user's 'profile' contact.
-                Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
 
-                // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
-
-                // Show primary email addresses first. Note that there won't be
-                // a primary email address if the user hasn't specified one.
-                ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-
-    }
-
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
-    }
 
     /**
      * Represents an asynchronous login/registration task used to authenticate
@@ -255,11 +215,13 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
         private final String mEmail;
+        private APIService mAPIService;
         private final String mPassword;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
+            mAPIService = APIUtils.getAPIService();
         }
 
         @Override
@@ -302,6 +264,70 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);
+        }
+
+        public void sendPOST(String email, String password, final Context context) {
+            NewUser newUser = new NewUser(email, password);
+            mAPIService.userSignIn(newUser).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                    if (response.code() == 201) {
+                        AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+                        alertDialog.setTitle(context.getString(R.string.accountcreatedSuccessfully));
+                        alertDialog.setMessage(context.getString(R.string.accountcreatedSub));
+                        alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                        alertDialog.show();
+
+                        String location = response.headers().get("Location");
+                        String value = location.split("profile/")[1];
+
+                        Log.e("UUID", value);
+
+                        SharedPreferences pref = getSharedPreferences(context.getString(R.string.tokenPrefKey), MODE_PRIVATE);
+                        pref.edit().putString(context.getString(R.string.token), value);
+                        pref.edit().commit();
+                    } else {
+                        Gson gson = new GsonBuilder().create();
+                        ErrorState err = new ErrorState();
+                        try {
+                            err = gson.fromJson(response.errorBody().string(), ErrorState.class);
+                            AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+                            alertDialog.setTitle("Error");
+                            alertDialog.setMessage(err.getError_message());
+                            alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                                    new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    });
+                            alertDialog.show();
+                        } catch (IOException e) {
+                            // handle failure to read error
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+                    alertDialog.setTitle("Error");
+                    alertDialog.setMessage("Internal error. Check internet connection");
+                    alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    alertDialog.show();
+                }
+            });
+
         }
     }
 }
