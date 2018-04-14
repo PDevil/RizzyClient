@@ -12,4 +12,5 @@
     <string name="tab_text_3">Settings</string>
     <string name="gpsIntent">GPSMAIN</string>
     <string name="gpsPosIntent">NOW</string>
+    <string name="swipeText">Swipe right to accept, left to dismiss</string>
 </resources>

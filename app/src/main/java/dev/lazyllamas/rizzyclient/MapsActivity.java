@@ -35,7 +35,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
     public static Double lat = 0d, lon = 0d;
     public static Double prev_lat = 0d, prev_lon = 0d;
     public static String mainIntentName = "gpsWorking";
-    int zoom = 15;
+    int zoom = 13;
     private GoogleMap mMap;
     private BroadcastReceiver broadcastReceiver_GPS = new BroadcastReceiver() {
         @Override
@@ -176,7 +176,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
 
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
-        mMap.getUiSettings().setMyLocationButtonEnabled(false);
+        //  mMap.getUiSettings().setMyLocationButtonEnabled(false);
         mMap.setMinZoomPreference(13);
 
         updateCamera(lat, lon);

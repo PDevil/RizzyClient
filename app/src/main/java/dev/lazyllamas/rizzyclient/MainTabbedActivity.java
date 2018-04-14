@@ -86,6 +86,10 @@ public class MainTabbedActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             if (position == 0)
                 return MapsActivity.newInstance(position + 1);
+            if (position == 1)
+                return MatchesActivity.newInstance(position + 1);
+            if (position == 2)
+                return SettingsActivity.newInstance(position + 1);
 
 
             return PlaceholderFragment.newInstance(position + 1);
