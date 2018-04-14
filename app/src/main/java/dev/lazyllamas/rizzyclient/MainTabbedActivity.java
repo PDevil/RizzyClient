@@ -1,6 +1,7 @@
 package dev.lazyllamas.rizzyclient;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -8,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ public class MainTabbedActivity extends AppCompatActivity {
     public static final String ARG_SECTION_NUMBER = "section_number";
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+    private boolean quit = false;
 
     public static Context mainContext;
 
@@ -51,11 +54,25 @@ public class MainTabbedActivity extends AppCompatActivity {
         super.onResume();
         startService(new Intent(this, GPSService.class));
     }
-
+    //stopService(new Intent(getApplicationContext(), GPSService.class));
     @Override
     public void onBackPressed() {
-        stopService(new Intent(this, GPSService.class));
-        super.onBackPressed();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setMessage(R.string.quitMessage)
+                .setCancelable(false)
+                .setPositiveButton(R.string.quitTrue, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        stopService(new Intent(getApplicationContext(), GPSService.class));
+                        MainTabbedActivity.this.finish();
+                    }
+                })
+                .setNegativeButton(R.string.quitFalse, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+        AlertDialog alert = builder.create();
+        alert.show();
     }
 
     public static class PlaceholderFragment extends Fragment {
