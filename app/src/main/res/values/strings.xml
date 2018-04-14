@@ -18,4 +18,8 @@
     <string name="gpsPosIntent">NOW</string>
     <string name="swipeText">Swipe right to accept, left to dismiss</string>
     <string name="title_activity_register">RegisterActivity</string>
+    <string name="accountcreatedSuccessfully">Account created successfully</string>
+    <string name="accountcreatedSub">You can now use Rizzy</string>
+    <string name="tokenPrefKey">token</string>
+    <string name="token">tokenPreference</string>
 </resources>
