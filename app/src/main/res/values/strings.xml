@@ -5,6 +5,10 @@
     <string name="noGPSTitle">No permission to access location</string>
     <string name="permissionGPSubititle">Our app needs access location permission to work properly</string>
     <string name="gpsNotEnabled">GPS is not enabled</string>
+    <string name="quitTitle">Quit?</string>
+    <string name="quitMessage">Do you want to quit?</string>
+    <string name="quitTrue">Yes</string>
+    <string name="quitFalse">No</string>
     <string name="openLocation">Open location settings</string>
     <string name="cancel">Cancel</string>
     <string name="tab_text_1">Nearby</string>
