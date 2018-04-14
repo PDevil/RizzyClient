@@ -36,7 +36,7 @@
 
         <receiver
             android:name=".CloseApp"
-            android:enabled="true"></receiver>
+            android:enabled="true" />
 
         <service
             android:name=".GPSService"
@@ -45,7 +45,11 @@
 
         <activity
             android:name=".PersonActivity"
-            android:parentActivityName=".MainTabbedActivity"></activity>
+            android:parentActivityName=".MainTabbedActivity" />
+        <activity
+            android:name=".RegisterActivity"
+            android:label="@string/title_activity_register"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

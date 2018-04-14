@@ -17,4 +17,5 @@
     <string name="gpsIntent">GPSMAIN</string>
     <string name="gpsPosIntent">NOW</string>
     <string name="swipeText">Swipe right to accept, left to dismiss</string>
+    <string name="title_activity_register">RegisterActivity</string>
 </resources>

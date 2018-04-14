@@ -4,6 +4,8 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -28,13 +30,18 @@ public class Person implements Parcelable {
     private int age;
 
     private String description;
+
+    @SerializedName("longitude")
     private double lon;
+    @SerializedName("latitude")
     private double lat;
+
     private ArrayList<Activities> currentActivities;
     private ArrayList<Activities> likedActivities;
 
     private Bitmap image;
 
+    @SerializedName("storage_id")
     private String id;
 
 

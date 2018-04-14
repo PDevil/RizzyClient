@@ -45,8 +45,6 @@ public class SplashScreen extends AppCompatActivity {
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
 
 
-
-
                 return true;
             }
         } else {
@@ -89,8 +87,7 @@ public class SplashScreen extends AppCompatActivity {
         }
     }
 
-    private void loadApp()
-    {
+    private void loadApp() {
 
 
         LocationManager lm = (LocationManager) getApplicationContext().getSystemService(getApplicationContext().LOCATION_SERVICE);
@@ -125,7 +122,7 @@ public class SplashScreen extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
 
-                finish();
+                    finish();
                 }
             });
             dialog.show();
@@ -182,15 +179,7 @@ public class SplashScreen extends AppCompatActivity {
 
                 GPSPermissionGrant();
 
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
-
-
-
-
-
-
-
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
             }
 

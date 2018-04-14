@@ -72,17 +72,15 @@ public class PersonActivity extends AppCompatActivity implements AbsListView.OnS
     }
 
     private void initListView() {
-        List<String> data = new ArrayList<>();
+        ArrayList<Person> data = new ArrayList<>();
 
-        data.add("Description:");
-        data.add(person.getDescription());
+        data.add(person);
 
-        data.add("Favourite sports: ");
-        if (person.getLikedActivities() != null)
-            data.add(person.getLikedActivities().toString());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.listtextview, android.R.id.text1, data);
-        listView.setAdapter(adapter);
+        ListViewAdapterPerson adapter_new = new ListViewAdapterPerson(getBaseContext(), data);
+
+
+        listView.setAdapter(adapter_new);
 
         listView.setDividerHeight(0);
 
