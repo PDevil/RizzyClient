@@ -1,6 +1,5 @@
 package dev.lazyllamas.rizzyclient;
 
-
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -21,11 +20,8 @@ public class SplashScreen extends AppCompatActivity {
 
     ImageView imageView;
     Animation an, an2;
-
     public static final int REQUEST_LOCATION = 1;
-
     boolean gpsGranted;
-
     boolean permissionRequested = false;
 
 
@@ -41,22 +37,15 @@ public class SplashScreen extends AppCompatActivity {
             } else {
 
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATION);
-
-
-
-
                 return true;
             }
         } else {
             //  Log.v(TAG,"Permission is granted");
-
             gpsGranted = true;
             permissionRequested = true;
             loadApp();
             return true;
         }
-
-
     }
 
     @Override
@@ -68,7 +57,6 @@ public class SplashScreen extends AppCompatActivity {
                     gpsGranted = true;
                     permissionRequested = true;
                     loadApp();
-
                 } else {
                     AlertDialog alertDialog = new AlertDialog.Builder(SplashScreen.this).create();
                     alertDialog.setTitle(getString(R.string.noGPSTitle));
@@ -89,8 +77,6 @@ public class SplashScreen extends AppCompatActivity {
 
     private void loadApp()
     {
-
-
         LocationManager lm = (LocationManager) getApplicationContext().getSystemService(getApplicationContext().LOCATION_SERVICE);
         boolean gps_enabled = false;
         boolean network_enabled = false;
@@ -123,15 +109,11 @@ public class SplashScreen extends AppCompatActivity {
 
                 @Override
                 public void onClick(DialogInterface paramDialogInterface, int paramInt) {
-
                 finish();
                 }
             });
             dialog.show();
         }
-
-
-
         if ((gps_enabled || network_enabled) && gpsGranted)
             finish();
     }
@@ -141,7 +123,7 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
-        imageView = (ImageView) findViewById(R.id.imageView);
+        imageView = findViewById(R.id.imageView);
 
         an = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);
         an2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.abc_fade_out);
@@ -156,19 +138,8 @@ public class SplashScreen extends AppCompatActivity {
             @Override
             public void onAnimationEnd(Animation animation) {
                 imageView.startAnimation(an2);
-
                 GPSPermissionGrant();
-
-                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
-
-
-
-
-
-
-
-
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             }
 
             @Override
