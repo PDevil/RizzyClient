@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">RizzyClient</string>
     <string name="title_activity_splash_screen">SplashScreen</string>
+    <string name="notifyChannel">Channel01</string>
+    <string name="noGPSTitle">No permission to access location</string>
+    <string name="permissionGPSubititle">Our app needs access location permission to work properly</string>
+    <string name="gpsNotEnabled">GPS is not enabled</string>
+    <string name="openLocation">Open location settings</string>
+    <string name="cancel">Cancel</string>
 </resources>

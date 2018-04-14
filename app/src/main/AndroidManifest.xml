@@ -22,6 +22,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
+        <receiver
+            android:name=".CloseApp"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="CloseApp" />
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".GPSService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
+
+
+
 
 </manifest>
