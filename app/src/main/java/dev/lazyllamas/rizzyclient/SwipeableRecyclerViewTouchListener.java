@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package dev.lazyllamas.client;
+package dev.lazyllamas.rizzyclient;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
