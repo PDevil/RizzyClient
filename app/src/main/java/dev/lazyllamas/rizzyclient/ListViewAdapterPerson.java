@@ -32,8 +32,8 @@ public class ListViewAdapterPerson extends ArrayAdapter<Person> {
 
         Person curr_person = person.get(position);
 
-        TextView textView = listItem.findViewById(R.id.textView3);
-        ImageView imageView = listItem.findViewById(R.id.imageView4);
+        //TextView textView = listItem.findViewById(R.id.textView3);
+        //ImageView imageView = listItem.findViewById(R.id.imageView4);
 
         return listItem;
     }
