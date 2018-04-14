@@ -59,7 +59,7 @@ public class GPSService extends Service implements LocationListener {
         NotificationManager notificationManager =
                 (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 
-        Intent intent_closeApp = new Intent("CloseApp");
+        Intent intent_closeApp = new Intent(this, CloseApp.class);
 
         PendingIntent resultPendingIntent =
                         PendingIntent.getBroadcast(

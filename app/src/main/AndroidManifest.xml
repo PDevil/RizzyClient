@@ -12,9 +12,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:launchMode="singleInstance"
         android:theme="@style/AppTheme">
         <activity  android:name=".SplashScreen"
-            android:excludeFromRecents="true">
+            android:excludeFromRecents="true"
+            android:launchMode="singleTop">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,16 +31,12 @@
         <activity
             android:name=".MainTabbedActivity"
             android:launchMode="singleInstance"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
 
 
         <receiver
             android:name=".CloseApp"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="CloseApp" />
-            </intent-filter>
+            android:enabled="true">
         </receiver>
 
         <service

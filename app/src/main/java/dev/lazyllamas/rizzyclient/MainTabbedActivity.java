@@ -42,6 +42,12 @@ public class MainTabbedActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        startService(new Intent(this, GPSService.class));
+    }
+
+    @Override
     public void onBackPressed() {
         stopService(new Intent(this, GPSService.class));
         super.onBackPressed();

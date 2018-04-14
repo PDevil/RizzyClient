@@ -2,6 +2,8 @@ package dev.lazyllamas.rizzyclient;
 
 
 import android.Manifest;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -132,9 +134,20 @@ public class SplashScreen extends AppCompatActivity {
 
         if ((gps_enabled || network_enabled) && gpsGranted) {
             Intent intent = new Intent(SplashScreen.this, MainTabbedActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
         }
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -142,10 +155,19 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash_screen);
 
+        an2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.abc_fade_out);
+
+        if (isMyServiceRunning(GPSService.class)) {
+            Intent intent = new Intent(SplashScreen.this, MainTabbedActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        }
+
+
         imageView = findViewById(R.id.imageView);
 
         an = AnimationUtils.loadAnimation(getBaseContext(), R.anim.rotate);
-        an2 = AnimationUtils.loadAnimation(getBaseContext(), R.anim.abc_fade_out);
 
         imageView.startAnimation(an);
         an.setAnimationListener(new Animation.AnimationListener() {
