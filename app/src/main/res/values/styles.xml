@@ -8,12 +8,12 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:navigationBarColor">@color/colorAccent</item>
         <item name="android:statusBarColor">@color/colorAccent</item>
-
         <item name="android:textColor">@color/textColor</item>
         <item name="android:windowAnimationStyle">@style/WindowAnimationTransition</item>
-
     </style>
-
+    <style name="AppTheme.JebanyToolbar" parent="@style/Base.ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="android:fillColor">@color/jebanyToolbarColor</item>
+    </style>
     <style name="AppTheme.AppBarOverlay" parent="AppTheme" />
 
     <style name="AppTheme.PopupOverlay" parent="AppTheme" />
