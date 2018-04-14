@@ -65,7 +65,7 @@ public class PersonActivity extends AppCompatActivity implements AbsListView.OnS
     private void initView() {
         listView = findViewById(R.id.lv_main);
         floatTitle = findViewById(R.id.tv_main_title);
-        floatTitle.setText(person.getName());
+        floatTitle.setText(person.getName()+", "+person.getAge());
         toolbar = findViewById(R.id.tb_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
