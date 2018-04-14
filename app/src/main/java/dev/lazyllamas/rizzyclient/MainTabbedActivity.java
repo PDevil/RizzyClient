@@ -1,5 +1,6 @@
 package dev.lazyllamas.rizzyclient;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -18,6 +19,8 @@ public class MainTabbedActivity extends AppCompatActivity {
     public static final String ARG_SECTION_NUMBER = "section_number";
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
+
+    public static Context mainContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +42,8 @@ public class MainTabbedActivity extends AppCompatActivity {
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 
         startService(new Intent(this, GPSService.class));
+
+        mainContext = this;
     }
 
     @Override

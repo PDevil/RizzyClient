@@ -1,6 +1,9 @@
 package dev.lazyllamas.rizzyclient;
 
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
@@ -45,19 +48,28 @@ public class MatchesActivity extends Fragment {
 
         //TODO
         mItems = new ArrayList<>(3);
-
-        mItems.add(new Person("Artur", 60, "Polubił zabawy z UI", 0, 0));
-        mItems.add(new Person("Gerard", 25, "Szanuje Papieża, koszykówka", 1, 1));
-        mItems.add(new Person("Paweł", 25, "Wkurwiony na Jave i OAuth2", 25.55, 44.22));
+        Bitmap icon = BitmapFactory.decodeResource(v.getResources(),
+                R.drawable.sport);
+        mItems.add(new Person("Artur", 60, "Polubił zabawy z UI", 0, 0, new ArrayList<Person.Activities>(), new ArrayList<Person.Activities>(), icon, "1a3ea0e3-76be-4281-a6e4-28d8d2094546"));
+        mItems.add(new Person("Gerard", 25, "Szanuje Papieża, koszykówka", 1, 1, new ArrayList<Person.Activities>(), new ArrayList<Person.Activities>(), icon, "55571649-899f-4253-9651-4690eaa1dec0"));
+        mItems.add(new Person("Paweł", 25, "Wkurwiony na Jave i OAuth2", 25.55, 44.22, new ArrayList<Person.Activities>(), new ArrayList<Person.Activities>(), icon, "f72ba1d1-4bf0-4955-905b-9bb3a87c5d03"));
 
 
         OnItemTouchListener itemTouchListener = new OnItemTouchListener() {
             @Override
             public void onCardViewTap(View view, int position) {
-                Snackbar snack = Snackbar.make(getView(), R.string.swipeText, Snackbar.LENGTH_LONG);
+               /* Snackbar snack = Snackbar.make(getView(), R.string.swipeText, Snackbar.LENGTH_LONG);
                 TextView tv = snack.getView().findViewById(android.support.design.R.id.snackbar_text);
                 tv.setTextColor(Color.WHITE);
-                snack.show();
+                snack.show();*/
+
+                Bundle b = new Bundle();
+                b.putParcelable("dev.lazyllamas.rizzyclient", mItems.get(position));
+
+                Intent i = new Intent(getContext(), PersonActivity.class);
+                i.putExtras(b);
+
+                startActivity(i);
 
 
             }

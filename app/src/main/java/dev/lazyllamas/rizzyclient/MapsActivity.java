@@ -28,6 +28,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 import dev.lazyllamas.rizzyclient.Business.Person;
 
 public class MapsActivity extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
@@ -105,9 +107,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
             MarkerOptions marker = new MarkerOptions();
             marker.title(person.getName());
 
-            Bitmap imageBitmap = BitmapFactory.decodeResource(getView().getResources(),
-                    R.drawable.sport);
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(imageBitmap, 100, 100, false);
+            Bitmap resizedBitmap = Bitmap.createScaledBitmap(person.getImage(), 100, 100, false);
 
             marker.icon(BitmapDescriptorFactory.fromBitmap(resizedBitmap));
             marker.position(pos);
@@ -181,8 +181,13 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
 
         updateCamera(lat, lon);
 
-        addPersonMarker(new Person("Gerard", 19, "", 54.365, 18.60773902));
-        addPersonMarker(new Person("xDD", 19, "", 54.369, 18.60573902));
+        //TODO
+
+        Bitmap icon = BitmapFactory.decodeResource(getView().getResources(),
+                R.drawable.sport);
+
+        addPersonMarker(new Person("Gerard", 19, "", 54.365, 18.60773902, new ArrayList<Person.Activities>(), new ArrayList<Person.Activities>(), icon, "b6524ae7-d9bd-49c7-a885-883aa1a64938"));
+        addPersonMarker(new Person("xDD", 19, "", 54.369, 18.60573902, new ArrayList<Person.Activities>(), new ArrayList<Person.Activities>(), icon, "77fc6c96-7ebf-4759-87f7-2228fec6c323"));
     }
 
     @Override
