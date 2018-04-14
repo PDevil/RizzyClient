@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.Menu;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
@@ -80,7 +79,7 @@ public class PersonActivity extends AppCompatActivity implements AbsListView.OnS
         if (person.getLikedActivities() != null)
             data.add(person.getLikedActivities().toString());
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.ListTextView, android.R.id.text1, data);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, R.layout.listtextview, android.R.id.text1, data);
         listView.setAdapter(adapter);
 
         listView.setDividerHeight(0);
