@@ -6,6 +6,7 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
@@ -128,8 +129,13 @@ public class SplashScreen extends AppCompatActivity {
             dialog.show();
         }
 
-
-        if ((gps_enabled || network_enabled) && gpsGranted) {
+        if ((gps_enabled || network_enabled) && !isSignedIn()) {
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+            Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
+        } else if ((gps_enabled || network_enabled) && gpsGranted) {
             Intent intent = new Intent(SplashScreen.this, MainTabbedActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -145,6 +151,11 @@ public class SplashScreen extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    protected boolean isSignedIn() {
+        SharedPreferences pref = getSharedPreferences(getString(R.string.tokenPrefKey), MODE_PRIVATE);
+        return pref.getBoolean(getString(R.string.token), false);
     }
 
     @Override
@@ -170,6 +181,8 @@ public class SplashScreen extends AppCompatActivity {
         an.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
+                GPSPermissionGrant();
+
 
             }
 
@@ -177,7 +190,6 @@ public class SplashScreen extends AppCompatActivity {
             public void onAnimationEnd(Animation animation) {
                 imageView.startAnimation(an2);
 
-                GPSPermissionGrant();
 
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
