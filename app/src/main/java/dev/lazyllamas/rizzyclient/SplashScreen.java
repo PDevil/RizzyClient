@@ -155,7 +155,8 @@ public class SplashScreen extends AppCompatActivity {
 
     protected boolean isSignedIn() {
         SharedPreferences pref = getSharedPreferences(getString(R.string.tokenPrefKey), MODE_PRIVATE);
-        return pref.getBoolean(getString(R.string.token), false);
+        String test = pref.getString(getString(R.string.token), null);
+        return test != null;
     }
 
     @Override

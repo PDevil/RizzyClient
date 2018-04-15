@@ -211,6 +211,7 @@ public class LoginActivity extends AppCompatActivity {
      */
     public class UserLoginTask {
 
+
         private final String mEmail;
         private APIService mAPIService;
         private final String mPassword;
@@ -240,8 +241,7 @@ public class LoginActivity extends AppCompatActivity {
                         Log.e("UUID", value);
 
                         SharedPreferences pref = getSharedPreferences(context.getString(R.string.tokenPrefKey), MODE_PRIVATE);
-                        pref.edit().putString(context.getString(R.string.token), value);
-                        pref.edit().commit();
+                        pref.edit().putString(context.getString(R.string.token), value).apply();
 
                         Intent intent = new Intent(LoginActivity.this, MainTabbedActivity.class);
                         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

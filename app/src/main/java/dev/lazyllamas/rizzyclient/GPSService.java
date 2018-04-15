@@ -5,7 +5,10 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -14,10 +17,26 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import dev.lazyllamas.rizzyclient.Business.APIService;
+import dev.lazyllamas.rizzyclient.Business.APIUtils;
+import dev.lazyllamas.rizzyclient.Business.ErrorState;
+import dev.lazyllamas.rizzyclient.Business.NewUser;
+import dev.lazyllamas.rizzyclient.Business.Person;
+import dev.lazyllamas.rizzyclient.Business.Utils;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class GPSService extends Service implements LocationListener {
     public GPSService() {
@@ -37,6 +56,8 @@ public class GPSService extends Service implements LocationListener {
 
     String TAG = "RizzyClient";
 
+    APIService mAPIService;
+
 
     Notification gpsNotification;
 
@@ -53,6 +74,8 @@ public class GPSService extends Service implements LocationListener {
             mTimer = new Timer();
             mTimer.schedule(new TimerTaskToGetLocation(), 5, notify_interval);
             intent = new Intent(str_receiver);
+
+        mAPIService = APIUtils.getAPIService();
 
 //        fn_getlocation();
 
@@ -159,7 +182,7 @@ public class GPSService extends Service implements LocationListener {
                         Log.d("longitude", location.getLongitude() + "");
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
-                        fn_update(location);
+                        fn_update(location, getBaseContext());
                         returngpsWorking(true);
                     }
                 }
@@ -176,7 +199,7 @@ public class GPSService extends Service implements LocationListener {
 
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
-                        fn_update(location);
+                        fn_update(location, getBaseContext());
                         returngpsWorking(false);
                     }
                 }
@@ -185,6 +208,26 @@ public class GPSService extends Service implements LocationListener {
 
 
         }
+
+    }
+
+
+    public void sendPOST(double lat, double lon, Context context) {
+        Person person = new Person(lat, lon);
+
+
+        mAPIService.updateLocation(Utils.getMyId(context), person).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                Log.e("", "");
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("", "");
+            }
+        });
+
 
     }
 
@@ -210,8 +253,9 @@ public class GPSService extends Service implements LocationListener {
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(gpsStatusIntent);
     }
 
-    private void fn_update(Location location) {
+    private void fn_update(Location location, Context context) {
 
+        sendPOST(latitude, longitude, context);
 
         intent.putExtra("latutide", location.getLatitude() + "");
         intent.putExtra("longitude", location.getLongitude() + "");
