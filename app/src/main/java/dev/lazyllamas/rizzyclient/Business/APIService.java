@@ -45,5 +45,8 @@ public interface APIService {
     @POST("/profile/avatar/{id}")
     Call<ResponseBody> uploadImage(@Path("id") String userId, @Part MultipartBody.Part file);
 
+    @GET("/profile/avatar/{id}")
+    Call<ResponseBody> getImage(@Path("id") String imgId);
+
 
 }

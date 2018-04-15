@@ -54,9 +54,11 @@
             android:theme="@style/AppTheme" />
         <activity
             android:name=".LoginActivity"
+            android:excludeFromRecents="true"
             android:label="@string/title_activity_login" />
 
         <activity android:name=".ActivitiesActivity"
+            android:excludeFromRecents="true"
             android:label="@string/title_activity_login" />
 
         <activity
