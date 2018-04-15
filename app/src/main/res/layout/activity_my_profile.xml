@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Name"
+        android:textAlignment="center"
         android:textSize="20sp"
         tools:text="Name" />
 
@@ -19,28 +20,39 @@
         android:id="@+id/nameText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:te
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="text" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Birthday"
-        android:textSize="20sp" />
+        android:inputType="date"
+        android:textAlignment="center"
+        android:textSize="24sp" />
 
-    <EditText
+    <Button
         android:id="@+id/Birthday"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="date" />
+        android:layout_height="47dp"
+        android:background="@drawable/buttonshape"
+        android:gravity="center"
+        android:shadowColor="@color/btnColor"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="Pick Date"
+        android:textColor="@color/btnTextColor"
+        android:textSize="15dp" />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Description"
+        android:textAlignment="center"
         android:textSize="20sp" />
 
     <EditText
