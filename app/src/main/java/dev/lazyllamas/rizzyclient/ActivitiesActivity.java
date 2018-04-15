@@ -47,6 +47,11 @@ public class ActivitiesActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Person> call, Response<Person> response) {
                 person = response.body();
+
+               /* ArrayList<Person.Activities> likedActivities = new ArrayList<>();
+                likedActivities.add(Person.Activities.Running);
+               person = new Person("test", 12, "test description", 1.05,10.5, Person.Activities.Running, likedActivities, null, "1122");*/
+
                 if(person != null){
                     if (person.getLikedActivities() != null) {
                         for (int i = 0; i < person.getLikedActivities().size(); i++) {
