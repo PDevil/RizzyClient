@@ -92,6 +92,8 @@ public class MatchesActivity extends Fragment {
                                 R.drawable.sport), 100, 100, false)); //TODO
                         mItems.get(i).setCurrentActivities(Person.Activities.Running);
 
+                        mItems.get(i).setPokedBySomeoneElse(true);
+
                         ArrayList<Person.Activities> tmp = new ArrayList<>();
                         tmp.add(Person.Activities.Running);
 

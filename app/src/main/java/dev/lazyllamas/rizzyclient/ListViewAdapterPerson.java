@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -50,6 +51,11 @@ public class ListViewAdapterPerson extends ArrayAdapter<Person> {
         textView.setPadding(16,16,8,8);
         LinearLayout linearLayout = listItem.findViewById(R.id.linearayout1);
         linearLayout.removeAllViews();
+
+        Button poke = listItem.findViewById(R.id.button5);
+        if (curr_person.isPokedBySomeoneElse())
+            poke.setText("Accept");
+
         for (int i=0; i<curr_person.getLikedActivities().size(); i++) {
             boolean yes = false;
             String text;
@@ -75,7 +81,7 @@ public class ListViewAdapterPerson extends ArrayAdapter<Person> {
             textView1.setGravity(Gravity.CENTER_VERTICAL);
             textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25f);
             textView1.setPadding(8,8,8,8);
-            ((LinearLayout) linearLayout).addView(textView1);
+            linearLayout.addView(textView1);
             counter++;
         }
         return listItem;

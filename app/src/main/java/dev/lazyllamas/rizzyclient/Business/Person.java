@@ -32,6 +32,8 @@ public class Person implements Parcelable {
 
     private String description;
 
+    private boolean pokedBySomeoneElse;
+
     @SerializedName("longitude")
     private double lon;
     @SerializedName("latitude")
@@ -182,6 +184,8 @@ public class Person implements Parcelable {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        dest.writeInt(pokedBySomeoneElse ? 1 : 0);
     }
 
     private void readFromParcel(Parcel in) {
@@ -201,6 +205,17 @@ public class Person implements Parcelable {
 
         id = in.readString();
 
+        pokedBySomeoneElse = in.readInt() != 0;
+
+    }
+
+    public boolean isPokedBySomeoneElse() {
+
+        return pokedBySomeoneElse;
+    }
+
+    public void setPokedBySomeoneElse(boolean pokedBySomeoneElse) {
+        this.pokedBySomeoneElse = pokedBySomeoneElse;
     }
 
     public enum Activities {

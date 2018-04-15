@@ -215,8 +215,10 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
                 Bundle b = new Bundle();
                 b.putParcelable("dev.lazyllamas.rizzyclient", (Person) marker.getTag());
 
+
                 Intent i = new Intent(getContext(), PersonActivity.class);
                 i.putExtras(b);
+
 
                 startActivity(i);
 
