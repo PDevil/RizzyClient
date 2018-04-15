@@ -37,7 +37,7 @@ public class Person implements Parcelable {
     private double lat;
 
     private Activities currentActivities;
-    private ArrayList<Activities> likedActivities;
+    private ArrayList<Activities> likedActivities = new ArrayList<>(2);
 
     private Bitmap image;
 

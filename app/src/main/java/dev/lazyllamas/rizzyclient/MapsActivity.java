@@ -14,11 +14,14 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.LocalBroadcastManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,17 +42,31 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
+import dev.lazyllamas.rizzyclient.Business.APIService;
+import dev.lazyllamas.rizzyclient.Business.APIUtils;
 import dev.lazyllamas.rizzyclient.Business.Person;
+import dev.lazyllamas.rizzyclient.Business.Utils;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
-public class MapsActivity extends Fragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class MapsActivity extends Fragment implements OnMapReadyCallback {
 
     public static Double lat = 0d, lon = 0d;
     public static Double prev_lat = 0d, prev_lon = 0d;
     public static String mainIntentName = "gpsWorking";
-    private ArrayList<Person.Activities> list = new ArrayList<>();
     int zoom = 13;
     private GoogleMap mMap;
+    final long refresh_interval = 10000;
+    ArrayList<Person> nearbys;
+    private Timer mTimer = null;
+    private Handler mHandler = new Handler();
+    private APIService mAPIService;
+
     private BroadcastReceiver broadcastReceiver_GPS = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -119,17 +136,22 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
             marker.title(person.getName());
 
 
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(person.getImage(), 100, 100, false);
+            Bitmap tmp = Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
+                    R.drawable.sport), 100, 100, false);
+
+            //TODO  Bitmap resizedBitmap = Bitmap.createScaledBitmap(person.getImage(), 100, 100, false);
 
 
-            marker.icon(BitmapDescriptorFactory.fromBitmap(getCroppedBitmap(resizedBitmap)));
+            marker.icon(BitmapDescriptorFactory.fromBitmap(getCroppedBitmap(tmp)));
             marker.position(pos);
+
 
 
             Marker marker_Ready = mMap.addMarker(marker);
             marker_Ready.setTag(person);
 
-            mMap.setOnMarkerClickListener(this);
+            marker_Ready.showInfoWindow();
+
 
             // mMap.animateCamera(CameraUpdateFactory.zoomTo(6));
         }
@@ -178,6 +200,8 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
 
         mapFragment.getMapAsync(this);
 
+        mAPIService = APIUtils.getAPIService();
+
 
         return v;
 
@@ -195,18 +219,6 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
     public void onActivityCreated(Bundle state) {
         super.onActivityCreated(state);
 
-    }
-
-    private BitmapDescriptor bitmapDescriptorFromVector(Context context, Bitmap img) {
-        Drawable background = ContextCompat.getDrawable(context, R.drawable.pin);
-        background.setBounds(0, 0, background.getIntrinsicWidth(), background.getIntrinsicHeight());
-        Drawable vectorDrawable = new BitmapDrawable(img);
-        vectorDrawable.setBounds(40, 20, vectorDrawable.getIntrinsicWidth() + 40, vectorDrawable.getIntrinsicHeight() + 20);
-        Bitmap bitmap = Bitmap.createBitmap(background.getIntrinsicWidth(), background.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bitmap);
-        background.draw(canvas);
-        vectorDrawable.draw(canvas);
-        return BitmapDescriptorFactory.fromBitmap(bitmap);
     }
 
     @Override
@@ -238,15 +250,10 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
             }
         });
 
-        //TODO
+        mTimer = new Timer();
+        mTimer.schedule(new TimerTaskToGetLocation(), 5, refresh_interval);
 
-        Bitmap icon = BitmapFactory.decodeResource(getView().getResources(),
-                R.drawable.sport);
-        list.add(Person.Activities.Cycling);
-        list.add(Person.Activities.NordicWalking);
-        list.add(Person.Activities.Skateboarding);
-        addPersonMarker(new Person("Gerard", 19, "", 54.365, 18.60773902, Person.Activities.Cycling, list, icon, "b6524ae7-d9bd-49c7-a885-883aa1a64938"));
-        addPersonMarker(new Person("xDD", 19, "", 54.369, 18.60573902, Person.Activities.Running, list, icon, "77fc6c96-7ebf-4759-87f7-2228fec6c323"));
+
     }
 
     @Override
@@ -254,6 +261,45 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
         super.onResume();
 
 
+    }
+
+
+    private class TimerTaskToGetLocation extends TimerTask {
+        @Override
+        public void run() {
+
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    mAPIService.getNearby(Utils.getMyId(getContext())).enqueue(new Callback<ArrayList<Person>>() {
+                        @Override
+                        public void onResponse(Call<ArrayList<Person>> call, Response<ArrayList<Person>> response) {
+                            nearbys = response.body();
+                            mMap.clear();
+
+
+                            for (Person person : nearbys) {
+                                person.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
+                                        R.drawable.sport), 100, 100, false)); //TODO
+                                person.setCurrentActivities(Person.Activities.Running);
+
+                                ArrayList<Person.Activities> tmp = new ArrayList<>();
+                                tmp.add(Person.Activities.Running);
+
+                                person.setLikedActivities(tmp);
+                                addPersonMarker(person);
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(Call<ArrayList<Person>> call, Throwable t) {
+                            Log.e("Rizzy", "Failed downloading nearby");
+                        }
+                    });
+                }
+            });
+
+        }
     }
 
     @Override
@@ -273,14 +319,5 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
         super.onPause();
     }
 
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        // Retrieve the data from the marker.
 
-
-        // Return false to indicate that we have not consumed the event and that we wish
-        // for the default behavior to occur (which is for the camera to move such that the
-        // marker is centered and for the marker's info window to open, if it has one).
-        return false;
-    }
 }

@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +25,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import dev.lazyllamas.rizzyclient.Business.APIService;
+import dev.lazyllamas.rizzyclient.Business.APIUtils;
 import dev.lazyllamas.rizzyclient.Business.Person;
+import dev.lazyllamas.rizzyclient.Business.Utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 
 public class MatchesActivity extends Fragment {
@@ -32,6 +39,8 @@ public class MatchesActivity extends Fragment {
 
     private ArrayList<Person> mItems;
     private ArrayList<Person.Activities> list = new ArrayList<>( );
+
+    private APIService mAPIService;
 
     public static MatchesActivity newInstance(int sectionNumber) {
         MatchesActivity fragment = new MatchesActivity();
@@ -42,20 +51,41 @@ public class MatchesActivity extends Fragment {
         return fragment;
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_matches, container, false);
-        list.add(Person.Activities.Cycling);
-        list.add(Person.Activities.NordicWalking);
-        list.add(Person.Activities.Skateboarding);
+        mAPIService = APIUtils.getAPIService();
 
         //TODO
         mItems = new ArrayList<>(3);
         Bitmap icon = BitmapFactory.decodeResource(v.getResources(),
                 R.drawable.sport);
-        mItems.add(new Person("Artur", 60, "Polubił zabawy z UI", 0, 0, Person.Activities.NordicWalking, list, icon, "1a3ea0e3-76be-4281-a6e4-28d8d2094546"));
-        mItems.add(new Person("Gerard", 25, "Szanuje Papieża, koszykówka", 1, 1, Person.Activities.Cycling, list, icon, "55571649-899f-4253-9651-4690eaa1dec0"));
-        mItems.add(new Person("Paweł", 25, "Wkurwiony na Jave i OAuth2", 25.55, 44.22, Person.Activities.Skateboarding, list, icon, "f72ba1d1-4bf0-4955-905b-9bb3a87c5d03"));
+
+        mAPIService.getNearby(Utils.getMyId(getContext())).enqueue(new Callback<ArrayList<Person>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Person>> call, Response<ArrayList<Person>> response) {
+                mItems = response.body();
+
+                for (int i = 0; i < mItems.size(); i++) {
+                    mItems.get(i).setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
+                            R.drawable.sport), 100, 100, false)); //TODO
+                    mItems.get(i).setCurrentActivities(Person.Activities.Running);
+
+                    ArrayList<Person.Activities> tmp = new ArrayList<>();
+                    tmp.add(Person.Activities.Running);
+
+                    mItems.get(i).setLikedActivities(tmp);
+                }
+
+
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Person>> call, Throwable t) {
+                Log.e("Rizzy", "Failed downloading matches");
+            }
+        });
 
 
         OnItemTouchListener itemTouchListener = new OnItemTouchListener() {
