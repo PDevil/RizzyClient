@@ -76,8 +76,8 @@ public class MyProfile extends AppCompatActivity {
 
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 try {
-                    Date date = formatter.parse(name.getText().toString());
-                    person.setAge(date);
+                    Date dateval = formatter.parse(date.getText().toString());
+                    person.setAge(dateval);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
