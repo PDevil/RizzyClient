@@ -58,8 +58,15 @@
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:label="@string/title_activity_login"></activity>
-        <activity android:name=".ActivitiesActivity" />
+            android:label="@string/title_activity_login" />
+
+        <activity android:name=".ActivitiesActivity"
+            android:label="@string/title_activity_login" />
+
+        <activity
+            android:name=".MyProfile"
+            android:label="@string/title_activity_my_profile"
+            android:theme="@style/AppTheme" />
     </application>
 
 </manifest>
