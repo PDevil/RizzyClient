@@ -15,10 +15,10 @@
         android:layout_marginTop="8dp"
         android:text="Description:"
         android:textAlignment="textStart"
-        android:textSize="20dp"
+        android:textSize="32dp"
         app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.173"
+        app:layout_constraintHorizontal_bias="0.315"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0" />

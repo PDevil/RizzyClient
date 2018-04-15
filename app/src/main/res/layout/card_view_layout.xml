@@ -46,14 +46,24 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="6dp"
+            android:layout_marginEnd="8dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/my_border"
             android:ellipsize="middle"
+            android:ems="10"
+            android:inputType="textMultiLine"
             android:maxLines="3"
+            android:padding="12dp"
+            android:paddingBottom="8dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:singleLine="false"
             android:text="Lubie biegać, programować i jeść pizzę. Nie lubię pisać długich opisów"
-            android:textSize="14sp" />
+            android:textSize="16dp" />
 
 
     </LinearLayout>
