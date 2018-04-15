@@ -25,6 +25,7 @@
         android:shadowDy="0"
         android:shadowRadius="5"
         android:text="Activity"
+        android:visibility="gone"
         android:textColor="@color/btnTextColor"
         android:textSize="45dp"
         app:layout_constraintBottom_toBottomOf="parent"
