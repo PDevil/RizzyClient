@@ -22,14 +22,17 @@ public interface APIService {
     @POST("/auth/login")
     Call<ResponseBody> userSignIn(@Body NewUser person);
 
-    @POST("/profile/{id}")
-    Call<ResponseBody> updateLocation(@Path("id") String userId, @Body Person person);
+    @GET("/profile/{id}")
+    Call<Person> getProfile(@Path("id") String userId);
 
     @GET("/nearby/{id}")
     Call<ArrayList<Person>> getNearby(@Path("id") String userId);
 
     @GET("/matches/{id}")
     Call<ArrayList<Person>> getMatches(@Path("id") String userId);
+
+    @POST("/profile/{id}")
+    Call<ResponseBody> updateLocation(@Path("id") String userId, @Body Person person);
 
 
 }
