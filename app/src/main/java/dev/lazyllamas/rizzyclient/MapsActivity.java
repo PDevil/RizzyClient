@@ -37,6 +37,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
     public static Double lat = 0d, lon = 0d;
     public static Double prev_lat = 0d, prev_lon = 0d;
     public static String mainIntentName = "gpsWorking";
+    private ArrayList<Person.Activities> list = new ArrayList<>();
     int zoom = 13;
     private GoogleMap mMap;
     private BroadcastReceiver broadcastReceiver_GPS = new BroadcastReceiver() {
@@ -185,9 +186,11 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback, Google
 
         Bitmap icon = BitmapFactory.decodeResource(getView().getResources(),
                 R.drawable.sport);
-
-        addPersonMarker(new Person("Gerard", 19, "", 54.365, 18.60773902, new ArrayList<Person.Activities>(), new ArrayList<Person.Activities>(), icon, "b6524ae7-d9bd-49c7-a885-883aa1a64938"));
-        addPersonMarker(new Person("xDD", 19, "", 54.369, 18.60573902, new ArrayList<Person.Activities>(), new ArrayList<Person.Activities>(), icon, "77fc6c96-7ebf-4759-87f7-2228fec6c323"));
+        list.add(Person.Activities.Cycling);
+        list.add(Person.Activities.NordicWalking);
+        list.add(Person.Activities.Skateboarding);
+        addPersonMarker(new Person("Gerard", 19, "", 54.365, 18.60773902, Person.Activities.Cycling, list, icon, "b6524ae7-d9bd-49c7-a885-883aa1a64938"));
+        addPersonMarker(new Person("xDD", 19, "", 54.369, 18.60573902, Person.Activities.Running, list, icon, "77fc6c96-7ebf-4759-87f7-2228fec6c323"));
     }
 
     @Override

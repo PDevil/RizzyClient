@@ -36,7 +36,7 @@ public class Person implements Parcelable {
     @SerializedName("latitude")
     private double lat;
 
-    private ArrayList<Activities> currentActivities;
+    private Activities currentActivities;
     private ArrayList<Activities> likedActivities;
 
     private Bitmap image;
@@ -45,7 +45,7 @@ public class Person implements Parcelable {
     private String id;
 
 
-    public Person(String name, int age, String description, double lat, double lon, ArrayList<Activities> currentActivities, ArrayList<Activities> likedActivities, Bitmap image, String id) {
+    public Person(String name, int age, String description, double lat, double lon, Activities currentActivities, ArrayList<Activities> likedActivities, Bitmap image, String id) {
         this.name = name;
         this.age = age;
         this.description = description;
@@ -68,12 +68,12 @@ public class Person implements Parcelable {
         return lon;
     }
 
-    public ArrayList<Activities> getCurrentActivities() {
+    public Activities getCurrentActivities() {
 
         return currentActivities;
     }
 
-    public void setCurrentActivities(ArrayList<Activities> currentActivities) {
+    public void setCurrentActivities(Activities currentActivities) {
         this.currentActivities = currentActivities;
     }
 
@@ -107,7 +107,6 @@ public class Person implements Parcelable {
     }
 
     public String getName() {
-
         return name;
     }
 
@@ -154,9 +153,7 @@ public class Person implements Parcelable {
         dest.writeDouble(lat);
 
 
-        dest.writeInt(currentActivities.size());
-        for (Activities act : currentActivities)
-            dest.writeInt(act.ordinal());
+        dest.writeInt(currentActivities.ordinal());
         dest.writeInt(likedActivities.size());
         for (Activities act : likedActivities)
             dest.writeInt(act.ordinal());
@@ -189,11 +186,8 @@ public class Person implements Parcelable {
         lon = in.readDouble();
         lat = in.readDouble();
 
-        int tmp = in.readInt();
-
-        for (int i = 0; i < tmp; i++)
-            currentActivities.add(Activities.values()[in.readInt()]);
-
+        currentActivities = Activities.values()[in.readInt()];
+        likedActivities = new ArrayList<>();
         int tmp2 = in.readInt();
 
         for (int i = 0; i < tmp2; i++)

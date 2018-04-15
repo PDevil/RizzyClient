@@ -10,5 +10,5 @@
     <color name="border_color">#80e2e7</color>
     <color name="jebanyToolbarColor">#80e2e7</color>
     <color name="btnColorRed">#F44336</color>
-    <color name="activeActivityColor">#F44336</color>
+    <color name="activeActivityColor">#80e2e7</color>
 </resources>
