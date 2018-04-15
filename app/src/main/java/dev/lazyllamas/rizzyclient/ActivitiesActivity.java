@@ -18,10 +18,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import dev.lazyllamas.rizzyclient.Business.APIService;
 import dev.lazyllamas.rizzyclient.Business.APIUtils;
@@ -40,53 +44,58 @@ public class ActivitiesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activities);
-        final LinearLayout linearLayout = findViewById(R.id.activitiesID);
+        final RadioGroup radioGroup = findViewById(R.id.activitiesID);
 
         mAPIService = APIUtils.getAPIService();
         mAPIService.getProfile(Utils.getMyId(getBaseContext())).enqueue(new Callback<Person>() {
             @Override
-            public void onResponse(Call<Person> call, Response<Person> response) {
+            public void onResponse(final Call<Person> call, Response<Person> response) {
                 person = response.body();
 
-               /* ArrayList<Person.Activities> likedActivities = new ArrayList<>();
+                ArrayList<Person.Activities> likedActivities = new ArrayList<>();
                 likedActivities.add(Person.Activities.Running);
-               person = new Person("test", 12, "test description", 1.05,10.5, Person.Activities.Running, likedActivities, null, "1122");*/
+                likedActivities.add(Person.Activities.Skateboarding);
+                likedActivities.add(Person.Activities.NordicWalking);
+                person = new Person("test", 12, "test description", 1.05,10.5, Person.Activities.Running, likedActivities, null, "1122");
 
                 if(person != null){
                     if (person.getLikedActivities() != null) {
                         for (int i = 0; i < person.getLikedActivities().size(); i++) {
-                            boolean yes = false;
-                            String text;
-                            if (person.getLikedActivities().get(i) == person.getCurrentActivities()) {
-                                text = new String("¤ " + person.getCurrentActivities().toString());
-                                yes = true;
-                            } else {
-                                text = new String(person.getLikedActivities().get(i).toString());
-                                yes = false;
+                            String text = new String(person.getLikedActivities().get(i).toString());
+                            RadioButton radioButton = new RadioButton(getBaseContext());
+                            radioButton.setText(text);
+                            radioButton.setId(i);
+                            radioGroup.setOrientation(RadioGroup.VERTICAL);
+                            if(person.getCurrentActivities() == person.getLikedActivities().get(i)){
+                                radioButton.setChecked(true);
+                               // radioButton.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.activeActivityColor));
                             }
-                            TextView textView1 = new TextView(getApplicationContext());
-                            if (yes == true) {
-                                textView1.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.activeActivityColor));
-                            } else {
-                                textView1.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.textColor));
+                            else{
+                                radioButton.setChecked(false);
+                               // radioButton.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.textColor));
                             }
-                            textView1.setText(text);
-                            textView1.setLayoutParams(new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.FILL_PARENT,
-                                    LinearLayout.LayoutParams.WRAP_CONTENT));
-                            textView1.setGravity(Gravity.CENTER_VERTICAL);
-                            textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25f);
-                            textView1.setPadding(8, 8, 8, 8);
-                            linearLayout.addView(textView1);
+                            radioButton.setLayoutParams(new RadioGroup.LayoutParams(
+                                    RadioGroup.LayoutParams.WRAP_CONTENT,
+                                    RadioGroup.LayoutParams.WRAP_CONTENT));
+                            radioButton.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
+                            radioButton.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25f);
+                            radioButton.setPadding(8, 8, 8, 8);
+                            radioGroup.addView(radioButton);
                         }
                     }
+                    radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                            int checkedRadioButtonId = radioGroup.getCheckedRadioButtonId();
+                            person.setCurrentActivities(person.getLikedActivities().get(i));
+                        }
+                    });
                 }
                 else {
                     Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
                     finish();
                 }
             }
-
 
             @Override
             public void onFailure(Call<Person> call, Throwable t) {
