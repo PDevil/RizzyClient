@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Name"
-        android:textSize="24sp"
+        android:textSize="20sp"
         tools:text="Name" />
 
     <EditText
@@ -27,7 +27,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Birthday"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/Birthday"
@@ -41,12 +41,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Description"
-        android:textSize="24sp" />
+        android:textSize="20sp" />
 
     <EditText
         android:id="@+id/descriptionText"
         android:layout_width="match_parent"
-        android:layout_height="117dp"
+        android:layout_height="96dp"
         android:ems="10"
         android:inputType="textMultiLine"
         android:singleLine="false" />
@@ -60,7 +60,7 @@
         android:gravity="center"
         android:padding="14dp"
         android:text="Running"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     <CheckBox
         android:id="@+id/cyclingCheckBox"
@@ -71,7 +71,7 @@
         android:gravity="center"
         android:padding="14dp"
         android:text="Cycling"
-        android:textSize="30sp" />
+        android:textSize="20sp"/>
 
     <CheckBox
         android:id="@+id/skateboardingCheckBox"
@@ -82,7 +82,7 @@
         android:gravity="center"
         android:padding="14dp"
         android:text="Skateboarding"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     <CheckBox
         android:id="@+id/nordicwalkingCheckBox"
@@ -93,7 +93,7 @@
         android:gravity="center"
         android:padding="14dp"
         android:text="Nordic Walking"
-        android:textSize="30sp" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/button4"
@@ -106,6 +106,19 @@
         android:shadowRadius="5"
         android:text="Save"
         android:textColor="@color/btnTextColor"
-        android:textSize="30dp" />
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="@color/btnColor"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:textColor="@color/btnTextColor"
+        android:shadowRadius="5"
+        android:textSize="20sp"
+        android:text="Send image" />
 
 </LinearLayout>
