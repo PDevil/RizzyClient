@@ -57,6 +57,26 @@ public class MatchesActivity extends Fragment {
         View v = inflater.inflate(R.layout.activity_matches, container, false);
         mAPIService = APIUtils.getAPIService();
 
+        final OnItemTouchListener itemTouchListener = new OnItemTouchListener() {
+            @Override
+            public void onCardViewTap(View view, int position) {
+                Bundle b = new Bundle();
+                b.putParcelable("dev.lazyllamas.rizzyclient", mItems.get(position));
+
+                Intent i = new Intent(getContext(), PersonActivity.class);
+                i.putExtras(b);
+
+                startActivity(i);
+
+
+            }
+        };
+
+
+        final RecyclerView recyclerView = v.findViewById(R.id.recycler_view);
+
+
+
         //TODO
         mItems = new ArrayList<>(3);
         Bitmap icon = BitmapFactory.decodeResource(v.getResources(),
@@ -77,6 +97,10 @@ public class MatchesActivity extends Fragment {
 
                         mItems.get(i).setLikedActivities(tmp);
                     }
+
+                    mAdapter = new CardViewAdapter(mItems, itemTouchListener);
+                    recyclerView.setAdapter(mAdapter);
+                    recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
                 }
 
             }
@@ -88,28 +112,10 @@ public class MatchesActivity extends Fragment {
         });
 
 
-        OnItemTouchListener itemTouchListener = new OnItemTouchListener() {
-            @Override
-            public void onCardViewTap(View view, int position) {
-                Bundle b = new Bundle();
-                b.putParcelable("dev.lazyllamas.rizzyclient", mItems.get(position));
-
-                Intent i = new Intent(getContext(), PersonActivity.class);
-                i.putExtras(b);
-
-                startActivity(i);
 
 
-            }
-        };
 
 
-        //TODO
-        mAdapter = new CardViewAdapter(mItems, itemTouchListener);
-        RecyclerView recyclerView = v.findViewById(R.id.recycler_view);
-
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        recyclerView.setAdapter(mAdapter);
 
         SwipeableRecyclerViewTouchListener swipeTouchListener =
                 new SwipeableRecyclerViewTouchListener(recyclerView,
@@ -189,7 +195,7 @@ public class MatchesActivity extends Fragment {
 
         @Override
         public void onBindViewHolder(ViewHolder viewHolder, int i) {
-            viewHolder.name.setText(cards.get(i).getName() + ", " + cards.get(i).getAge());
+            viewHolder.name.setText(cards.get(i).getName() + ", " + Utils.getAge(cards.get(i).getAge()));
             viewHolder.description.setText(cards.get(i).getDescription());
         }
 

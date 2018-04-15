@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 import dev.lazyllamas.rizzyclient.MainTabbedActivity;
 
@@ -27,7 +28,7 @@ public class Person implements Parcelable {
     };
 
     private String name;
-    private int age;
+    private Date age;
 
     private String description;
 
@@ -49,7 +50,7 @@ public class Person implements Parcelable {
         this.lat = lat;
     }
 
-    public Person(String name, int age, String description, double lat, double lon, Activities currentActivities, ArrayList<Activities> likedActivities, Bitmap image, String id) {
+    public Person(String name, Date age, String description, double lat, double lon, Activities currentActivities, ArrayList<Activities> likedActivities, Bitmap image, String id) {
         this.name = name;
         this.age = age;
         this.description = description;
@@ -118,11 +119,11 @@ public class Person implements Parcelable {
         this.name = name;
     }
 
-    public int getAge() {
+    public Date getAge() {
         return age;
     }
 
-    public void setAge(int age) {
+    public void setAge(Date age) {
         this.age = age;
     }
 
@@ -151,7 +152,7 @@ public class Person implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
-        dest.writeInt(age);
+        dest.writeLong(age.getTime() / 1000);
         dest.writeString(description);
         dest.writeDouble(lon);
         dest.writeDouble(lat);
@@ -185,7 +186,8 @@ public class Person implements Parcelable {
 
     private void readFromParcel(Parcel in) {
         name = in.readString();
-        age = in.readInt();
+        long tmp = in.readLong();
+        age = new java.util.Date(tmp * 1000);
         description = in.readString();
         lon = in.readDouble();
         lat = in.readDouble();

@@ -2,12 +2,87 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activitiesID"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
-    android:theme="@android:style/Theme.Light.NoTitleBar"
-    tools:context=".ActivitiesActivity">
+    tools:context=".MyProfile">
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Name"
+        tools:text="Name" />
+
+    <EditText
+        android:id="@+id/nameText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Birthday" />
+
+    <EditText
+        android:id="@+id/Birthday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="date" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Description" />
+
+    <EditText
+        android:id="@+id/descriptionText"
+        android:layout_width="match_parent"
+        android:layout_height="117dp"
+        android:ems="10"
+        android:inputType="textMultiLine"
+        android:singleLine="false" />
+
+    <CheckBox
+        android:id="@+id/runningCheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Running" />
+
+    <CheckBox
+        android:id="@+id/cyclingCheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Cycling" />
+
+    <CheckBox
+        android:id="@+id/skateboardingCheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Skateboarding" />
+
+    <CheckBox
+        android:id="@+id/nordicwalkingCheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Nordic Walking" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/buttonshape"
+        android:shadowColor="@color/btnColor"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="Save"
+        android:textColor="@color/btnTextColor"
+        android:textSize="30dp" />
 
 </LinearLayout>

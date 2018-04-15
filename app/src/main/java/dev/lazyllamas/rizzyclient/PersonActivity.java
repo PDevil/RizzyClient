@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dev.lazyllamas.rizzyclient.Business.Person;
+import dev.lazyllamas.rizzyclient.Business.Utils;
 
 public class PersonActivity extends AppCompatActivity implements AbsListView.OnScrollListener {
 
@@ -65,7 +66,7 @@ public class PersonActivity extends AppCompatActivity implements AbsListView.OnS
     private void initView() {
         listView = findViewById(R.id.lv_main);
         floatTitle = findViewById(R.id.tv_main_title);
-        floatTitle.setText(person.getName()+", "+person.getAge());
+        floatTitle.setText(person.getName() + ", " + Utils.getAge(person.getAge()));
         toolbar = findViewById(R.id.tb_main);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -167,7 +168,7 @@ public class PersonActivity extends AppCompatActivity implements AbsListView.OnS
 
 
         if (scrollY > headerBarOffsetY) {
-            toolbar.setTitle(person.getName() + ", " + person.getAge());
+            toolbar.setTitle(person.getName() + ", " + Utils.getAge(person.getAge()));
             floatTitle.setVisibility(View.GONE);
         } else {
             toolbar.setTitle("");
