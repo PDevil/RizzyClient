@@ -25,6 +25,9 @@ public interface APIService {
     @GET("/profile/{id}")
     Call<Person> getProfile(@Path("id") String userId);
 
+    @PUT("/profile/{id}")
+    Call<Person> pushProfile(@Path("id") String userId, Person person);
+
     @GET("/nearby/{id}")
     Call<ArrayList<Person>> getNearby(@Path("id") String userId);
 
