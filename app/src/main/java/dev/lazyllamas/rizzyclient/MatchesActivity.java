@@ -61,11 +61,6 @@ public class MatchesActivity extends Fragment {
         OnItemTouchListener itemTouchListener = new OnItemTouchListener() {
             @Override
             public void onCardViewTap(View view, int position) {
-               /* Snackbar snack = Snackbar.make(getView(), R.string.swipeText, Snackbar.LENGTH_LONG);
-                TextView tv = snack.getView().findViewById(android.support.design.R.id.snackbar_text);
-                tv.setTextColor(Color.WHITE);
-                snack.show();*/
-
                 Bundle b = new Bundle();
                 b.putParcelable("dev.lazyllamas.rizzyclient", mItems.get(position));
 
@@ -76,23 +71,11 @@ public class MatchesActivity extends Fragment {
 
 
             }
-
-            @Override
-            public void onButton1Click(View view, int position) {
-
-            }
-
-            @Override
-            public void onButton2Click(View view, int position) {
-
-            }
         };
 
 
         //TODO
         mAdapter = new CardViewAdapter(mItems, itemTouchListener);
-
-
         RecyclerView recyclerView = v.findViewById(R.id.recycler_view);
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -156,12 +139,7 @@ public class MatchesActivity extends Fragment {
 
 
     public interface OnItemTouchListener {
-
         void onCardViewTap(View view, int position);
-
-        void onButton1Click(View view, int position);
-
-        void onButton2Click(View view, int position);
     }
 
     public class CardViewAdapter extends RecyclerView.Adapter<CardViewAdapter.ViewHolder> {
