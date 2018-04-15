@@ -44,6 +44,10 @@ public class Person implements Parcelable {
     @SerializedName("storage_id")
     private String id;
 
+    public Person(double lat, double lon) {
+        this.lon = lon;
+        this.lat = lat;
+    }
 
     public Person(String name, int age, String description, double lat, double lon, Activities currentActivities, ArrayList<Activities> likedActivities, Bitmap image, String id) {
         this.name = name;

@@ -229,8 +229,7 @@ public class RegisterActivity extends AppCompatActivity {
                         Log.e("UUID", value);
 
                         SharedPreferences pref = getSharedPreferences(context.getString(R.string.tokenPrefKey), MODE_PRIVATE);
-                        pref.edit().putString(context.getString(R.string.token), value);
-                        pref.edit().commit();
+                        pref.edit().putString(context.getString(R.string.token), value).apply();
 
                         Toast.makeText(context, R.string.RegisteredSuccessfully, Toast.LENGTH_LONG);
 
