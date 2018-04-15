@@ -255,7 +255,7 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
                             if(nearbys!=null) {
                                 for (Person person : nearbys) {
                                     person.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
-                                            R.drawable.sport), 100, 100, false)); //TODO
+                                            R.drawable.sport), 644, 362, false)); //TODO
                                     person.setCurrentActivities(Person.Activities.Running);
 
                                     ArrayList<Person.Activities> tmp = new ArrayList<>();

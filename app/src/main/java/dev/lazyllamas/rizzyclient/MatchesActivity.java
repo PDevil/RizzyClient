@@ -89,7 +89,7 @@ public class MatchesActivity extends Fragment {
                 if (mItems != null) {
                     for (int i = 0; i < mItems.size(); i++) {
                         mItems.get(i).setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
-                                R.drawable.sport), 100, 100, false)); //TODO
+                                R.drawable.sport), 644, 362, false)); //TODO
                         mItems.get(i).setCurrentActivities(Person.Activities.Running);
 
                         mItems.get(i).setPokedBySomeoneElse(true);

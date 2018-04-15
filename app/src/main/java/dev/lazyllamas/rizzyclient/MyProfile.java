@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -59,6 +60,7 @@ import dev.lazyllamas.rizzyclient.Business.APIUtils;
 import dev.lazyllamas.rizzyclient.Business.Person;
 import dev.lazyllamas.rizzyclient.Business.Utils;
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -91,7 +93,7 @@ public class MyProfile extends AppCompatActivity {
             switch (requestCode){
                 case GALLERY_REQUEST:
                     Uri selectedImage = data.getData();
-                    uploadFile(selectedImage);
+                    uploadFile(selectedImage, getApplication().getApplicationContext());
                     break;
             }
     }
@@ -195,6 +197,7 @@ public class MyProfile extends AppCompatActivity {
                                     new DialogInterface.OnClickListener() {
                                         public void onClick(DialogInterface dialog, int which) {
                                             dialog.dismiss();
+                                            finish();
                                         }
                                     });
                             alertDialog.show();
@@ -309,26 +312,21 @@ public class MyProfile extends AppCompatActivity {
         return result;
     }
 
-    private void uploadFile(Uri fileUri) {
+    private void uploadFile(Uri fileUri, Context context) {
 
         //creating a file
         File file = new File(getRealPathFromURI(fileUri));
 
         //creating request body for file
-        RequestBody requestFile = RequestBody.create(MediaType.parse(getContentResolver().getType(fileUri)), file);
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file);
 
-        //The gson builder
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-
+        MultipartBody.Part body = MultipartBody.Part.createFormData("file", file.getName(), requestFile);
 
         APIService apiservice = APIUtils.getAPIService();
 
+        String id = Utils.getMyId(context);
 
-        Call<ResponseBody> call = apiservice.uploadImage(requestFile);
-
-
+        Call<ResponseBody> call = apiservice.uploadImage(id, body);
         call.enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -43,7 +43,7 @@ public interface APIService {
 
     @Multipart
     @POST("/profile/avatar/{id}")
-    Call<ResponseBody> uploadImage(@Part("image\"; filename=\"myfile.jpg\" ") RequestBody file);
+    Call<ResponseBody> uploadImage(@Path("id") String userId, @Part MultipartBody.Part file);
 
 
 }
