@@ -2,12 +2,15 @@ package dev.lazyllamas.rizzyclient;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -17,17 +20,44 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
+import dev.lazyllamas.rizzyclient.Business.APIService;
+import dev.lazyllamas.rizzyclient.Business.APIUtils;
 import dev.lazyllamas.rizzyclient.Business.Person;
+import dev.lazyllamas.rizzyclient.Business.Utils;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ActivitiesActivity extends AppCompatActivity {
 
     private Person person;
     private Context context;
+
+    private APIService mAPIService;
     @Override
     protected void onCreate(Bundle savedInstanceState){
     super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_activities);
         LinearLayout linearLayout = findViewById(R.id.activitiesID);
+
+        mAPIService = APIUtils.getAPIService();
+        mAPIService.getProfile(Utils.getMyId(getBaseContext())).enqueue(new Callback<Person>() {
+            @Override
+            public void onResponse(Call<Person> call, Response<Person> response) {
+                person = response.body();
+            }
+
+            @Override
+            public void onFailure(Call<Person> call, Throwable t) {
+                Log.e("Rizzy", "Failed downloading current profile");
+            }
+
+
+        });
+
         for(int i=0; i<person.getLikedActivities().size(); i++){
             boolean yes = false;
             String text;
@@ -53,7 +83,7 @@ public class ActivitiesActivity extends AppCompatActivity {
             textView1.setGravity(Gravity.CENTER_VERTICAL);
             textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25f);
             textView1.setPadding(8,8,8,8);
-            ((LinearLayout) linearLayout).addView(textView1);
+            linearLayout.addView(textView1);
         }
     }
 }
