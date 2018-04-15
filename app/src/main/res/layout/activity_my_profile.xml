@@ -20,21 +20,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="textPersonName" />
+        android:inputType="text" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Birthday"
+        android:inputType="date"
         android:textSize="24sp" />
 
-    <EditText
+    <Button
         android:id="@+id/Birthday"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="date" />
+        android:background="@drawable/buttonshape"
+        android:shadowColor="@color/btnColor"
+        android:shadowDx="0"
+        android:shadowDy="0"
+        android:shadowRadius="5"
+        android:text="Pick Date"
+        android:textColor="@color/btnTextColor"
+        android:textSize="30dp"/>
 
     <TextView
         android:id="@+id/textView7"

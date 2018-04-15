@@ -3,10 +3,15 @@ package dev.lazyllamas.rizzyclient;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
+import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.icu.util.Calendar;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
@@ -19,6 +24,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -44,7 +50,6 @@ import retrofit2.Response;
 public class MyProfile extends AppCompatActivity {
 
     EditText name;
-    EditText date;
     EditText description;
     CheckBox running;
     CheckBox cycling;
@@ -52,6 +57,10 @@ public class MyProfile extends AppCompatActivity {
     CheckBox nordicwalking;
     private APIService mAPIService;
     private Person person;
+    private DatePickerDialog.OnDateSetListener mDateSetListener;
+    public int year;
+    public int month;
+    public int day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +68,7 @@ public class MyProfile extends AppCompatActivity {
         setContentView(R.layout.activity_my_profile);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         name = findViewById(R.id.nameText);
-        date = findViewById(R.id.Birthday);
         description = findViewById(R.id.descriptionText);
 
         running = findViewById(R.id.runningCheckBox);
@@ -69,6 +76,31 @@ public class MyProfile extends AppCompatActivity {
         cycling = findViewById(R.id.cyclingCheckBox);
         nordicwalking = findViewById(R.id.nordicwalkingCheckBox);
 
+        final Button mDisplayDate = findViewById(R.id.Birthday);
+        mDisplayDate.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View view) {
+                Calendar cal = Calendar.getInstance();
+                year = cal.get(Calendar.YEAR);
+                month = cal.get(Calendar.MONTH);
+                day = cal.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(
+                        MyProfile.this,
+                        android.R.style.Theme_Holo_Light_Dialog_MinWidth,
+                        mDateSetListener,
+                        year,month,day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+
+        mDateSetListener = new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                month = month+1;
+            }
+        };
         Button button = findViewById(R.id.button4);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +108,7 @@ public class MyProfile extends AppCompatActivity {
 
                 DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
                 try {
-                    Date dateval = formatter.parse(date.getText().toString());
+                    Date dateval = formatter.parse(year+"-"+month+"-"+day);
                     person.setAge(dateval);
                 } catch (ParseException e) {
                     e.printStackTrace();
@@ -174,7 +206,7 @@ public class MyProfile extends AppCompatActivity {
                         Format formatter = new SimpleDateFormat("yyyy-MM-dd");
                         String s = formatter.format(person.getAge());
 
-                        date.setText(s);
+                        String date = s;
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
