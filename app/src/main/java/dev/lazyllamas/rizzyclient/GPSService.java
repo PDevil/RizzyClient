@@ -164,7 +164,7 @@ public class GPSService extends Service implements LocationListener {
 
         if (!isGPSEnable && !isNetworkEnable) {
             Log.e(TAG, "Location not available");
-            returngpsWorking(false);
+
 
         } else {
 
@@ -183,7 +183,7 @@ public class GPSService extends Service implements LocationListener {
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
                         fn_update(location, getBaseContext());
-                        returngpsWorking(true);
+
                     }
                 }
             }
@@ -200,7 +200,7 @@ public class GPSService extends Service implements LocationListener {
                         latitude = location.getLatitude();
                         longitude = location.getLongitude();
                         fn_update(location, getBaseContext());
-                        returngpsWorking(false);
+
                     }
                 }
 
@@ -245,13 +245,6 @@ public class GPSService extends Service implements LocationListener {
         }
     }
 
-    private void returngpsWorking(boolean gpsWorking)
-    {
-        Intent gpsStatusIntent = new Intent();
-        gpsStatusIntent.putExtra(MapsActivity.mainIntentName, gpsWorking);
-        gpsStatusIntent.setAction(getString(R.string.gpsIntent));
-        LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(gpsStatusIntent);
-    }
 
     private void fn_update(Location location, Context context) {
 

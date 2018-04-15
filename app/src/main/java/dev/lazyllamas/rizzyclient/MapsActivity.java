@@ -58,7 +58,6 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
 
     public static Double lat = 0d, lon = 0d;
     public static Double prev_lat = 0d, prev_lon = 0d;
-    public static String mainIntentName = "gpsWorking";
     int zoom = 13;
     private GoogleMap mMap;
     final long refresh_interval = 10000;
@@ -67,38 +66,14 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
     private Handler mHandler = new Handler();
     private APIService mAPIService;
 
-    private BroadcastReceiver broadcastReceiver_GPS = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            boolean gpsWorking = intent.getBooleanExtra(mainIntentName, false);
-            Animation myFadeInAnimation = AnimationUtils.loadAnimation(getActivity(), R.anim.fade);
-            ImageView gpsIcon = getView().findViewById(R.id.imageView3);
-
-            TextView gpsText = getView().findViewById(R.id.textView);
-
-
-            if (gpsIcon != null && gpsText != null) {
-                if (gpsWorking) {
-                    gpsIcon.startAnimation(myFadeInAnimation);
-                    gpsText.setText("GPS is working");
-                } else {
-                    gpsIcon.clearAnimation();
-                    gpsText.setText("GPS is not working");
-                }
-            }
-        }
-    };
 
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-
-
             try {
 
                 if (prev_lat == 0 && prev_lon == 0)
                     updateCamera(lat, lon);
-
                 prev_lat = lat;
                 prev_lon = lon;
 
@@ -225,8 +200,6 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
 
         LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver, new IntentFilter(getString(R.string.gpsPosIntent)));
-        LocalBroadcastManager.getInstance(getActivity()).registerReceiver(broadcastReceiver_GPS, new IntentFilter(getString(R.string.gpsIntent)));
-
 
         mMap = googleMap;
         mMap.setMyLocationEnabled(true);
@@ -309,10 +282,6 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
             if (broadcastReceiver != null) {
                 LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver);
                 // broadcastReceiver = null;
-            }
-            if (broadcastReceiver_GPS != null) {
-                LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(broadcastReceiver_GPS);
-                //  broadcastReceiver_GPS = null;
             }
         } catch (Exception e) {
             e.printStackTrace();
