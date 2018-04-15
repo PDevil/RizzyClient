@@ -277,17 +277,18 @@ public class MapsActivity extends Fragment implements OnMapReadyCallback {
                             nearbys = response.body();
                             mMap.clear();
 
+                            if(nearbys!=null) {
+                                for (Person person : nearbys) {
+                                    person.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
+                                            R.drawable.sport), 100, 100, false)); //TODO
+                                    person.setCurrentActivities(Person.Activities.Running);
 
-                            for (Person person : nearbys) {
-                                person.setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
-                                        R.drawable.sport), 100, 100, false)); //TODO
-                                person.setCurrentActivities(Person.Activities.Running);
+                                    ArrayList<Person.Activities> tmp = new ArrayList<>();
+                                    tmp.add(Person.Activities.Running);
 
-                                ArrayList<Person.Activities> tmp = new ArrayList<>();
-                                tmp.add(Person.Activities.Running);
-
-                                person.setLikedActivities(tmp);
-                                addPersonMarker(person);
+                                    person.setLikedActivities(tmp);
+                                    addPersonMarker(person);
+                                }
                             }
                         }
 

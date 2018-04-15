@@ -38,7 +38,7 @@ public class MatchesActivity extends Fragment {
     private CardViewAdapter mAdapter;
 
     private ArrayList<Person> mItems;
-    private ArrayList<Person.Activities> list = new ArrayList<>( );
+    private ArrayList<Person.Activities> list = new ArrayList<>();
 
     private APIService mAPIService;
 
@@ -66,18 +66,18 @@ public class MatchesActivity extends Fragment {
             @Override
             public void onResponse(Call<ArrayList<Person>> call, Response<ArrayList<Person>> response) {
                 mItems = response.body();
+                if (mItems != null) {
+                    for (int i = 0; i < mItems.size(); i++) {
+                        mItems.get(i).setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
+                                R.drawable.sport), 100, 100, false)); //TODO
+                        mItems.get(i).setCurrentActivities(Person.Activities.Running);
 
-                for (int i = 0; i < mItems.size(); i++) {
-                    mItems.get(i).setImage(Bitmap.createScaledBitmap(BitmapFactory.decodeResource(getResources(),
-                            R.drawable.sport), 100, 100, false)); //TODO
-                    mItems.get(i).setCurrentActivities(Person.Activities.Running);
+                        ArrayList<Person.Activities> tmp = new ArrayList<>();
+                        tmp.add(Person.Activities.Running);
 
-                    ArrayList<Person.Activities> tmp = new ArrayList<>();
-                    tmp.add(Person.Activities.Running);
-
-                    mItems.get(i).setLikedActivities(tmp);
+                        mItems.get(i).setLikedActivities(tmp);
+                    }
                 }
-
 
             }
 
