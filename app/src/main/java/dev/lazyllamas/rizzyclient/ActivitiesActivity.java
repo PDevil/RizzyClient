@@ -19,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -33,22 +34,54 @@ import retrofit2.Response;
 public class ActivitiesActivity extends AppCompatActivity {
 
     private Person person;
-    private Context context;
 
     private APIService mAPIService;
     @Override
-    protected void onCreate(Bundle savedInstanceState){
-    super.onCreate(savedInstanceState);
-
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_activities);
-        LinearLayout linearLayout = findViewById(R.id.activitiesID);
+        final LinearLayout linearLayout = findViewById(R.id.activitiesID);
 
         mAPIService = APIUtils.getAPIService();
         mAPIService.getProfile(Utils.getMyId(getBaseContext())).enqueue(new Callback<Person>() {
             @Override
             public void onResponse(Call<Person> call, Response<Person> response) {
                 person = response.body();
+                if(person != null){
+                    if (person.getLikedActivities() != null) {
+                        for (int i = 0; i < person.getLikedActivities().size(); i++) {
+                            boolean yes = false;
+                            String text;
+                            if (person.getLikedActivities().get(i) == person.getCurrentActivities()) {
+                                text = new String("¤ " + person.getCurrentActivities().toString());
+                                yes = true;
+                            } else {
+                                text = new String(person.getLikedActivities().get(i).toString());
+                                yes = false;
+                            }
+                            TextView textView1 = new TextView(getApplicationContext());
+                            if (yes == true) {
+                                textView1.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.activeActivityColor));
+                            } else {
+                                textView1.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.textColor));
+                            }
+                            textView1.setText(text);
+                            textView1.setLayoutParams(new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.FILL_PARENT,
+                                    LinearLayout.LayoutParams.WRAP_CONTENT));
+                            textView1.setGravity(Gravity.CENTER_VERTICAL);
+                            textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25f);
+                            textView1.setPadding(8, 8, 8, 8);
+                            linearLayout.addView(textView1);
+                        }
+                    }
+                }
+                else {
+                    Toast.makeText(getBaseContext(), "Something went wrong", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
+
 
             @Override
             public void onFailure(Call<Person> call, Throwable t) {
@@ -57,33 +90,5 @@ public class ActivitiesActivity extends AppCompatActivity {
 
 
         });
-
-        for(int i=0; i<person.getLikedActivities().size(); i++){
-            boolean yes = false;
-            String text;
-            if(person.getLikedActivities().get(i) == person.getCurrentActivities()){
-                text = new String("¤ "+person.getCurrentActivities().toString());
-                yes  = true;
-            }
-            else{
-                text = new String(person.getLikedActivities().get(i).toString());
-                yes = false;
-            }
-            TextView textView1 = new TextView(getApplicationContext());
-            if(yes == true){
-                textView1.setTextColor(ContextCompat.getColor(context,R.color.activeActivityColor));
-            }
-            else{
-                textView1.setTextColor(ContextCompat.getColor(context,R.color.textColor));
-            }
-            textView1.setText(text);
-            textView1.setLayoutParams(new LinearLayout.LayoutParams(
-                    LinearLayout.LayoutParams.FILL_PARENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT));
-            textView1.setGravity(Gravity.CENTER_VERTICAL);
-            textView1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 25f);
-            textView1.setPadding(8,8,8,8);
-            linearLayout.addView(textView1);
-        }
     }
 }

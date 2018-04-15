@@ -33,6 +33,14 @@ public class SettingsActivity extends Fragment {
                 startActivity(i);
             }
         });
+        Button button1 = layout.findViewById(R.id.button3);
+        button1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getContext(), MyProfile.class);
+                startActivity(i);
+            }
+        });
         return v;
     }
 
