@@ -25,7 +25,12 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import dev.lazyllamas.rizzyclient.Business.APIService;
 import dev.lazyllamas.rizzyclient.Business.APIUtils;
@@ -69,8 +74,17 @@ public class MyProfile extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                DateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                try {
+                    Date date = formatter.parse(name.getText().toString());
+                    person.setAge(date);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
                 person.setName(name.getText().toString());
                 person.setDescription(description.getText().toString());
+
 
                 ArrayList<Person.Activities> likednew = new ArrayList<>();
 
@@ -155,6 +169,15 @@ public class MyProfile extends AppCompatActivity {
                 if (person != null) {
                     name.setText(person.getName());
                     description.setText(person.getDescription());
+
+                    try {
+                        Format formatter = new SimpleDateFormat("yyyy-MM-dd");
+                        String s = formatter.format(person.getAge());
+
+                        date.setText(s);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     if (person.getLikedActivities() != null) {
                         for (Person.Activities activity : person.getLikedActivities()) {
